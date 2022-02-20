@@ -2,12 +2,13 @@ import type { RecordInfo } from '~/types'
 import TimeagoColumn from '~/components/table/timeagoColumn.vue'
 import AvatarColumn from '~/components/table/avatarColumn.vue'
 import NameAvatarColumn from '~/components/table/nameAvatarColumn.vue'
+import { GiraffeSubspecies } from './giraffeSubspecies'
 
-export const {{ capitalizedTypename }} = <RecordInfo<'{{ typename }}'>>{
-  typename: '{{ typename }}',
-  pluralTypename: '{{ typename }}s',
-  name: '{{ capitalizedTypename }}',
-  pluralName: '{{ capitalizedTypename }}s',
+export const GiraffeSpecies = <RecordInfo<'giraffeSpecies'>>{
+  typename: 'giraffeSpecies',
+  pluralTypename: 'giraffeSpecies',
+  name: 'Giraffe Species',
+  pluralName: 'Giraffe Species',
   icon: 'mdi-folder-information',
   routeName: 'a-view',
   renderItem: (item) => item.name,
@@ -17,6 +18,9 @@ export const {{ capitalizedTypename }} = <RecordInfo<'{{ typename }}'>>{
     },
     name: {
       text: 'Name',
+    },
+    scientificName: {
+      text: 'Scientific Name',
     },
     avatar: {
       text: 'Avatar',
@@ -66,19 +70,32 @@ export const {{ capitalizedTypename }} = <RecordInfo<'{{ typename }}'>>{
     downloadOptions: {},
   },
   addOptions: {
-    fields: ['avatar', 'name', 'description'],
+    fields: ['avatar', 'name', 'scientificName', 'description'],
   },
   importOptions: {
-    fields: ['avatar', 'name', 'description'],
+    fields: ['avatar', 'name', 'scientificName', 'description'],
   },
   editOptions: {
-    fields: ['avatar', 'name', 'description'],
+    fields: ['avatar', 'name', 'scientificName', 'description'],
   },
   viewOptions: {
-    fields: ['avatar', 'name', 'description'],
+    fields: ['avatar', 'name', 'scientificName', 'description'],
   },
   enterOptions: {},
   deleteOptions: {},
   shareOptions: {},
-  expandTypes: [],
+  expandTypes: [
+    {
+      recordInfo: GiraffeSubspecies,
+      lockedFilters: (_that, item) => {
+        return [
+          {
+            field: 'species',
+            operator: 'eq',
+            value: item.id,
+          },
+        ]
+      },
+    },
+  ],
 }

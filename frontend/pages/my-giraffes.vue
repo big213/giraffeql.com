@@ -8,7 +8,7 @@
 
 <script>
 import CrudRecordPage from '~/components/page/crudRecordPage.vue'
-import { MyFiles } from '~/models'
+import { MyGiraffes } from '~/models'
 
 export default {
   middleware: ['router-auth'],
@@ -18,8 +18,8 @@ export default {
 
   data() {
     return {
-      recordInfo: MyFiles,
-      title: 'My Files',
+      recordInfo: MyGiraffes,
+      title: 'My Giraffes',
     }
   },
   computed: {

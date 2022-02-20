@@ -2,13 +2,19 @@ import type { RecordInfo } from '~/types'
 import TimeagoColumn from '~/components/table/timeagoColumn.vue'
 import AvatarColumn from '~/components/table/avatarColumn.vue'
 import NameAvatarColumn from '~/components/table/nameAvatarColumn.vue'
+import RecordColumn from '~/components/table/recordColumn.vue'
+import {
+  generateJoinableField,
+  generatePreviewableRecordField,
+} from '~/services/recordInfo'
+import { getGiraffeSubspecies } from '~/services/dropdown'
 
-export const {{ capitalizedTypename }} = <RecordInfo<'{{ typename }}'>>{
-  typename: '{{ typename }}',
-  pluralTypename: '{{ typename }}s',
-  name: '{{ capitalizedTypename }}',
-  pluralName: '{{ capitalizedTypename }}s',
-  icon: 'mdi-folder-information',
+export const Giraffe = <RecordInfo<'giraffe'>>{
+  typename: 'giraffe',
+  pluralTypename: 'giraffes',
+  name: 'Giraffe',
+  pluralName: 'Giraffes',
+  icon: 'mdi-pig-variant',
   routeName: 'a-view',
   renderItem: (item) => item.name,
   fields: {
@@ -32,6 +38,26 @@ export const {{ capitalizedTypename }} = <RecordInfo<'{{ typename }}'>>{
       fields: ['name', 'avatar'],
       component: NameAvatarColumn,
     },
+    subspecies: {
+      ...generateJoinableField({
+        text: 'Subspecies',
+        fieldname: 'subspecies',
+        typename: 'giraffeSubspecies',
+        hasAvatar: true,
+        inputType: 'autocomplete',
+      }),
+      getOptions: getGiraffeSubspecies,
+    },
+    subspeciesRecord: generatePreviewableRecordField({
+      fieldname: 'subspecies',
+      text: 'Subspecies',
+    }),
+    createdBy: generateJoinableField({
+      text: 'Created By',
+      fieldname: 'createdBy',
+      typename: 'user',
+      hasAvatar: true,
+    }),
     createdAt: {
       text: 'Created At',
       component: TimeagoColumn,
@@ -55,6 +81,10 @@ export const {{ capitalizedTypename }} = <RecordInfo<'{{ typename }}'>>{
         field: 'nameWithAvatar',
       },
       {
+        field: 'subspeciesRecord',
+        width: '200px',
+      },
+      {
         field: 'createdAt',
         width: '150px',
       },
@@ -66,16 +96,16 @@ export const {{ capitalizedTypename }} = <RecordInfo<'{{ typename }}'>>{
     downloadOptions: {},
   },
   addOptions: {
-    fields: ['avatar', 'name', 'description'],
+    fields: ['subspecies', 'avatar', 'name', 'description'],
   },
   importOptions: {
-    fields: ['avatar', 'name', 'description'],
+    fields: ['subspecies', 'avatar', 'name', 'description'],
   },
   editOptions: {
-    fields: ['avatar', 'name', 'description'],
+    fields: ['subspecies', 'avatar', 'name', 'description'],
   },
   viewOptions: {
-    fields: ['avatar', 'name', 'description'],
+    fields: ['subspeciesRecord', 'avatar', 'name', 'description'],
   },
   enterOptions: {},
   deleteOptions: {},

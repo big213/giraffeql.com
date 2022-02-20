@@ -1,8 +1,10 @@
 // Query builder (Typescript version >= 4.1.3 required)
-/* const queryResult = executeGiraffeql({
+/*
+const queryResult = executeGiraffeql({
   // Start typing here to get hints
   
-}); */
+});
+*/
 
 export function executeGiraffeql<Key extends keyof Root>(
   query: GetQuery<Key>
@@ -112,6 +114,12 @@ export type SortByField<T> = {
   apiKeyGroupByKey: undefined;
   fileSortByKey: "id" | "createdAt";
   fileGroupByKey: undefined;
+  giraffeSpeciesSortByKey: "id" | "createdAt" | "updatedAt";
+  giraffeSpeciesGroupByKey: undefined;
+  giraffeSubspeciesSortByKey: "id" | "createdAt" | "updatedAt";
+  giraffeSubspeciesGroupByKey: undefined;
+  giraffeSortByKey: "id" | "createdAt" | "updatedAt";
+  giraffeGroupByKey: undefined;
 };
 /**All Input types*/ export type InputTypes = {
   /**Input object for syncCurrentUser*/ syncCurrentUser: {
@@ -228,6 +236,112 @@ export type SortByField<T> = {
     item: InputTypes["file"];
     fields: InputTypes["updateFileFields"];
   };
+  giraffeSpecies: { id?: Scalars["id"] };
+  giraffeSpeciesSortByObject: SortByField<Scalars["giraffeSpeciesSortByKey"]>;
+  "giraffeSpeciesFilterByField/id": FilterByField<Scalars["id"]>;
+  "giraffeSpeciesFilterByField/createdBy.id": FilterByField<Scalars["id"]>;
+  giraffeSpeciesFilterByObject: {
+    id?: InputTypes["giraffeSpeciesFilterByField/id"];
+    "createdBy.id"?: InputTypes["giraffeSpeciesFilterByField/createdBy.id"];
+  };
+  giraffeSpeciesPaginator: {
+    first?: Scalars["number"];
+    last?: Scalars["number"];
+    after?: Scalars["string"];
+    before?: Scalars["string"];
+    sortBy?: InputTypes["giraffeSpeciesSortByObject"][];
+    filterBy?: InputTypes["giraffeSpeciesFilterByObject"][];
+    groupBy?: Scalars["giraffeSpeciesGroupByKey"][];
+    search?: Scalars["string"];
+  };
+  createGiraffeSpecies: {
+    name: Scalars["string"];
+    scientificName: Scalars["string"];
+    avatar?: Scalars["string"] | null;
+    description?: Scalars["string"] | null;
+  };
+  updateGiraffeSpeciesFields: {
+    name?: Scalars["string"];
+    scientificName?: Scalars["string"];
+    avatar?: Scalars["string"] | null;
+    description?: Scalars["string"] | null;
+  };
+  updateGiraffeSpecies: {
+    item: InputTypes["giraffeSpecies"];
+    fields: InputTypes["updateGiraffeSpeciesFields"];
+  };
+  giraffeSubspecies: { id?: Scalars["id"] };
+  giraffeSubspeciesSortByObject: SortByField<
+    Scalars["giraffeSubspeciesSortByKey"]
+  >;
+  "giraffeSubspeciesFilterByField/id": FilterByField<Scalars["id"]>;
+  "giraffeSubspeciesFilterByField/createdBy.id": FilterByField<Scalars["id"]>;
+  giraffeSubspeciesFilterByObject: {
+    id?: InputTypes["giraffeSubspeciesFilterByField/id"];
+    "createdBy.id"?: InputTypes["giraffeSubspeciesFilterByField/createdBy.id"];
+  };
+  giraffeSubspeciesPaginator: {
+    first?: Scalars["number"];
+    last?: Scalars["number"];
+    after?: Scalars["string"];
+    before?: Scalars["string"];
+    sortBy?: InputTypes["giraffeSubspeciesSortByObject"][];
+    filterBy?: InputTypes["giraffeSubspeciesFilterByObject"][];
+    groupBy?: Scalars["giraffeSubspeciesGroupByKey"][];
+    search?: Scalars["string"];
+  };
+  createGiraffeSubspecies: {
+    species: InputTypes["giraffeSpecies"];
+    name: Scalars["string"];
+    scientificName: Scalars["string"];
+    avatar?: Scalars["string"] | null;
+    description?: Scalars["string"] | null;
+  };
+  updateGiraffeSubspeciesFields: {
+    species?: InputTypes["giraffeSpecies"];
+    name?: Scalars["string"];
+    scientificName?: Scalars["string"];
+    avatar?: Scalars["string"] | null;
+    description?: Scalars["string"] | null;
+  };
+  updateGiraffeSubspecies: {
+    item: InputTypes["giraffeSubspecies"];
+    fields: InputTypes["updateGiraffeSubspeciesFields"];
+  };
+  giraffe: { id?: Scalars["id"] };
+  giraffeSortByObject: SortByField<Scalars["giraffeSortByKey"]>;
+  "giraffeFilterByField/id": FilterByField<Scalars["id"]>;
+  "giraffeFilterByField/createdBy.id": FilterByField<Scalars["id"]>;
+  giraffeFilterByObject: {
+    id?: InputTypes["giraffeFilterByField/id"];
+    "createdBy.id"?: InputTypes["giraffeFilterByField/createdBy.id"];
+  };
+  giraffePaginator: {
+    first?: Scalars["number"];
+    last?: Scalars["number"];
+    after?: Scalars["string"];
+    before?: Scalars["string"];
+    sortBy?: InputTypes["giraffeSortByObject"][];
+    filterBy?: InputTypes["giraffeFilterByObject"][];
+    groupBy?: Scalars["giraffeGroupByKey"][];
+    search?: Scalars["string"];
+  };
+  createGiraffe: {
+    subspecies: InputTypes["giraffeSubspecies"];
+    name: Scalars["string"];
+    avatar?: Scalars["string"] | null;
+    description?: Scalars["string"] | null;
+  };
+  updateGiraffeFields: {
+    subspecies?: InputTypes["giraffeSubspecies"];
+    name?: Scalars["string"];
+    avatar?: Scalars["string"] | null;
+    description?: Scalars["string"] | null;
+  };
+  updateGiraffe: {
+    item: InputTypes["giraffe"];
+    fields: InputTypes["updateGiraffeFields"];
+  };
 };
 /**All main types*/ export type MainTypes = {
   paginatorInfo: { Typename: "paginatorInfo"; Type: GetType<PaginatorInfo> };
@@ -240,6 +354,27 @@ export type SortByField<T> = {
   };
   fileEdge: { Typename: "fileEdge"; Type: GetType<FileEdge> };
   filePaginator: { Typename: "filePaginator"; Type: GetType<FilePaginator> };
+  giraffeSpeciesEdge: {
+    Typename: "giraffeSpeciesEdge";
+    Type: GetType<GiraffeSpeciesEdge>;
+  };
+  giraffeSpeciesPaginator: {
+    Typename: "giraffeSpeciesPaginator";
+    Type: GetType<GiraffeSpeciesPaginator>;
+  };
+  giraffeSubspeciesEdge: {
+    Typename: "giraffeSubspeciesEdge";
+    Type: GetType<GiraffeSubspeciesEdge>;
+  };
+  giraffeSubspeciesPaginator: {
+    Typename: "giraffeSubspeciesPaginator";
+    Type: GetType<GiraffeSubspeciesPaginator>;
+  };
+  giraffeEdge: { Typename: "giraffeEdge"; Type: GetType<GiraffeEdge> };
+  giraffePaginator: {
+    Typename: "giraffePaginator";
+    Type: GetType<GiraffePaginator>;
+  };
   userRoleEnumPaginator: {
     Typename: "userRoleEnumPaginator";
     Type: GetType<UserRoleEnumPaginator>;
@@ -247,6 +382,12 @@ export type SortByField<T> = {
   user: { Typename: "user"; Type: GetType<User> };
   apiKey: { Typename: "apiKey"; Type: GetType<ApiKey> };
   file: { Typename: "file"; Type: GetType<File> };
+  giraffeSpecies: { Typename: "giraffeSpecies"; Type: GetType<GiraffeSpecies> };
+  giraffeSubspecies: {
+    Typename: "giraffeSubspecies";
+    Type: GetType<GiraffeSubspecies>;
+  };
+  giraffe: { Typename: "giraffe"; Type: GetType<Giraffe> };
 };
 /**PaginatorInfo Type*/ export type PaginatorInfo = {
   /**The typename of the record*/ __typename: {
@@ -284,6 +425,33 @@ export type FileEdge = Edge<File>;
   };
   paginatorInfo: { Type: PaginatorInfo; Args: undefined };
   edges: { Type: FileEdge[]; Args: undefined };
+};
+export type GiraffeSpeciesEdge = Edge<GiraffeSpecies>;
+/**Paginator*/ export type GiraffeSpeciesPaginator = {
+  /**The typename of the record*/ __typename: {
+    Type: Scalars["string"];
+    Args: [Scalars["number"]];
+  };
+  paginatorInfo: { Type: PaginatorInfo; Args: undefined };
+  edges: { Type: GiraffeSpeciesEdge[]; Args: undefined };
+};
+export type GiraffeSubspeciesEdge = Edge<GiraffeSubspecies>;
+/**Paginator*/ export type GiraffeSubspeciesPaginator = {
+  /**The typename of the record*/ __typename: {
+    Type: Scalars["string"];
+    Args: [Scalars["number"]];
+  };
+  paginatorInfo: { Type: PaginatorInfo; Args: undefined };
+  edges: { Type: GiraffeSubspeciesEdge[]; Args: undefined };
+};
+export type GiraffeEdge = Edge<Giraffe>;
+/**Paginator*/ export type GiraffePaginator = {
+  /**The typename of the record*/ __typename: {
+    Type: Scalars["string"];
+    Args: [Scalars["number"]];
+  };
+  paginatorInfo: { Type: PaginatorInfo; Args: undefined };
+  edges: { Type: GiraffeEdge[]; Args: undefined };
 };
 /**EnumPaginator*/ export type UserRoleEnumPaginator = {
   /**The typename of the record*/ __typename: {
@@ -359,6 +527,67 @@ export type FileEdge = Edge<File>;
   };
   createdBy: { Type: User; Args: undefined };
 };
+/**GiraffeSpecies type*/ export type GiraffeSpecies = {
+  /**The unique ID of the field*/ id: { Type: Scalars["id"]; Args: undefined };
+  /**The typename of the record*/ __typename: {
+    Type: Scalars["string"];
+    Args: [Scalars["number"]];
+  };
+  name: { Type: Scalars["string"]; Args: undefined };
+  scientificName: { Type: Scalars["string"]; Args: undefined };
+  avatar: { Type: Scalars["string"] | null; Args: undefined };
+  description: { Type: Scalars["string"] | null; Args: undefined };
+  /**When the record was created*/ createdAt: {
+    Type: Scalars["unixTimestamp"];
+    Args: undefined;
+  };
+  /**When the record was last updated*/ updatedAt: {
+    Type: Scalars["unixTimestamp"] | null;
+    Args: undefined;
+  };
+  createdBy: { Type: User; Args: undefined };
+};
+/**GiraffeSubspecies type*/ export type GiraffeSubspecies = {
+  /**The unique ID of the field*/ id: { Type: Scalars["id"]; Args: undefined };
+  /**The typename of the record*/ __typename: {
+    Type: Scalars["string"];
+    Args: [Scalars["number"]];
+  };
+  species: { Type: GiraffeSpecies; Args: undefined };
+  name: { Type: Scalars["string"]; Args: undefined };
+  scientificName: { Type: Scalars["string"]; Args: undefined };
+  avatar: { Type: Scalars["string"] | null; Args: undefined };
+  description: { Type: Scalars["string"] | null; Args: undefined };
+  /**When the record was created*/ createdAt: {
+    Type: Scalars["unixTimestamp"];
+    Args: undefined;
+  };
+  /**When the record was last updated*/ updatedAt: {
+    Type: Scalars["unixTimestamp"] | null;
+    Args: undefined;
+  };
+  createdBy: { Type: User; Args: undefined };
+};
+/**Giraffe type*/ export type Giraffe = {
+  /**The unique ID of the field*/ id: { Type: Scalars["id"]; Args: undefined };
+  /**The typename of the record*/ __typename: {
+    Type: Scalars["string"];
+    Args: [Scalars["number"]];
+  };
+  subspecies: { Type: GiraffeSubspecies; Args: undefined };
+  name: { Type: Scalars["string"]; Args: undefined };
+  avatar: { Type: Scalars["string"] | null; Args: undefined };
+  description: { Type: Scalars["string"] | null; Args: undefined };
+  /**When the record was created*/ createdAt: {
+    Type: Scalars["unixTimestamp"];
+    Args: undefined;
+  };
+  /**When the record was last updated*/ updatedAt: {
+    Type: Scalars["unixTimestamp"] | null;
+    Args: undefined;
+  };
+  createdBy: { Type: User; Args: undefined };
+};
 /**All Root resolvers*/ export type Root = {
   getUserRoleEnumPaginator: { Type: UserRoleEnumPaginator; Args: undefined };
   getCurrentUser: { Type: User; Args: undefined };
@@ -390,4 +619,52 @@ export type FileEdge = Edge<File>;
   createFile: { Type: File; Args: InputTypes["createFile"] };
   updateFile: { Type: File; Args: InputTypes["updateFile"] };
   executeAdminFunction: { Type: Scalars["unknown"]; Args: Scalars["string"] };
+  getGiraffeSpecies: {
+    Type: GiraffeSpecies;
+    Args: InputTypes["giraffeSpecies"];
+  };
+  getGiraffeSpeciesPaginator: {
+    Type: GiraffeSpeciesPaginator;
+    Args: InputTypes["giraffeSpeciesPaginator"];
+  };
+  deleteGiraffeSpecies: {
+    Type: GiraffeSpecies;
+    Args: InputTypes["giraffeSpecies"];
+  };
+  createGiraffeSpecies: {
+    Type: GiraffeSpecies;
+    Args: InputTypes["createGiraffeSpecies"];
+  };
+  updateGiraffeSpecies: {
+    Type: GiraffeSpecies;
+    Args: InputTypes["updateGiraffeSpecies"];
+  };
+  getGiraffeSubspecies: {
+    Type: GiraffeSubspecies;
+    Args: InputTypes["giraffeSubspecies"];
+  };
+  getGiraffeSubspeciesPaginator: {
+    Type: GiraffeSubspeciesPaginator;
+    Args: InputTypes["giraffeSubspeciesPaginator"];
+  };
+  deleteGiraffeSubspecies: {
+    Type: GiraffeSubspecies;
+    Args: InputTypes["giraffeSubspecies"];
+  };
+  createGiraffeSubspecies: {
+    Type: GiraffeSubspecies;
+    Args: InputTypes["createGiraffeSubspecies"];
+  };
+  updateGiraffeSubspecies: {
+    Type: GiraffeSubspecies;
+    Args: InputTypes["updateGiraffeSubspecies"];
+  };
+  getGiraffe: { Type: Giraffe; Args: InputTypes["giraffe"] };
+  getGiraffePaginator: {
+    Type: GiraffePaginator;
+    Args: InputTypes["giraffePaginator"];
+  };
+  deleteGiraffe: { Type: Giraffe; Args: InputTypes["giraffe"] };
+  createGiraffe: { Type: Giraffe; Args: InputTypes["createGiraffe"] };
+  updateGiraffe: { Type: Giraffe; Args: InputTypes["updateGiraffe"] };
 };

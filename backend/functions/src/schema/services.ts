@@ -6,6 +6,9 @@ import { ApiKeyService } from "./models/apiKey/service";
 import { GithubService } from "./models/github/service";
 import { FileService } from "./models/file/service";
 import { AdminService } from "./models/admin/service";
+import { GiraffeSpeciesService } from "./models/giraffeSpecies/service";
+import { GiraffeSubspeciesService } from "./models/giraffeSubspecies/service";
+import { GiraffeService } from "./models/giraffe/service";
 /** END Service Import */
 
 /** END LINK Service Import */
@@ -15,6 +18,9 @@ export const ApiKey = new ApiKeyService();
 export const File = new FileService();
 export const Github = new GithubService();
 export const Admin = new AdminService();
+export const GiraffeSpecies = new GiraffeSpeciesService();
+export const GiraffeSubspecies = new GiraffeSubspeciesService();
+export const Giraffe = new GiraffeService();
 /** END Service Set */
 
 /** END LINK Service Set */

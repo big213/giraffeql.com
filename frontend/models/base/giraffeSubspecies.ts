@@ -2,12 +2,17 @@ import type { RecordInfo } from '~/types'
 import TimeagoColumn from '~/components/table/timeagoColumn.vue'
 import AvatarColumn from '~/components/table/avatarColumn.vue'
 import NameAvatarColumn from '~/components/table/nameAvatarColumn.vue'
+import {
+  generateJoinableField,
+  generatePreviewableRecordField,
+} from '~/services/recordInfo'
+import { Giraffe } from './giraffe'
 
-export const {{ capitalizedTypename }} = <RecordInfo<'{{ typename }}'>>{
-  typename: '{{ typename }}',
-  pluralTypename: '{{ typename }}s',
-  name: '{{ capitalizedTypename }}',
-  pluralName: '{{ capitalizedTypename }}s',
+export const GiraffeSubspecies = <RecordInfo<'giraffeSubspecies'>>{
+  typename: 'giraffeSubspecies',
+  pluralTypename: 'giraffeSubspeciess',
+  name: 'Giraffe Subspecies',
+  pluralName: 'Giraffe Subspecies',
   icon: 'mdi-folder-information',
   routeName: 'a-view',
   renderItem: (item) => item.name,
@@ -17,6 +22,9 @@ export const {{ capitalizedTypename }} = <RecordInfo<'{{ typename }}'>>{
     },
     name: {
       text: 'Name',
+    },
+    scientificName: {
+      text: 'Scientific Name',
     },
     avatar: {
       text: 'Avatar',
@@ -32,6 +40,16 @@ export const {{ capitalizedTypename }} = <RecordInfo<'{{ typename }}'>>{
       fields: ['name', 'avatar'],
       component: NameAvatarColumn,
     },
+    species: generateJoinableField({
+      text: 'Species',
+      fieldname: 'species',
+      typename: 'giraffeSpecies',
+      hasAvatar: true,
+    }),
+    speciesRecord: generatePreviewableRecordField({
+      fieldname: 'species',
+      text: 'Species',
+    }),
     createdAt: {
       text: 'Created At',
       component: TimeagoColumn,
@@ -55,6 +73,10 @@ export const {{ capitalizedTypename }} = <RecordInfo<'{{ typename }}'>>{
         field: 'nameWithAvatar',
       },
       {
+        field: 'speciesRecord',
+        width: '200px',
+      },
+      {
         field: 'createdAt',
         width: '150px',
       },
@@ -66,19 +88,39 @@ export const {{ capitalizedTypename }} = <RecordInfo<'{{ typename }}'>>{
     downloadOptions: {},
   },
   addOptions: {
-    fields: ['avatar', 'name', 'description'],
+    fields: ['species', 'avatar', 'name', 'scientificName', 'description'],
   },
   importOptions: {
-    fields: ['avatar', 'name', 'description'],
+    fields: ['species', 'avatar', 'name', 'scientificName', 'description'],
   },
   editOptions: {
-    fields: ['avatar', 'name', 'description'],
+    fields: ['species', 'avatar', 'name', 'scientificName', 'description'],
   },
   viewOptions: {
-    fields: ['avatar', 'name', 'description'],
+    fields: [
+      'speciesRecord',
+      'avatar',
+      'name',
+      'scientificName',
+      'description',
+    ],
   },
   enterOptions: {},
   deleteOptions: {},
   shareOptions: {},
-  expandTypes: [],
+  expandTypes: [
+    {
+      recordInfo: Giraffe,
+      name: 'Giraffes',
+      lockedFilters: (_that, item) => {
+        return [
+          {
+            field: 'subspecies',
+            operator: 'eq',
+            value: item.id,
+          },
+        ]
+      },
+    },
+  ],
 }

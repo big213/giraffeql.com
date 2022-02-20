@@ -36,6 +36,37 @@ export async function up(knex: Knex): Promise<void[]> {
       table.dateTime("updated_at").nullable();
       table.string("created_by").notNullable();
     }),
+    knex.schema.createTable("giraffeSpecies", function (table) {
+      table.string("id").notNullable().primary();
+      table.string("name").notNullable();
+      table.string("scientific_name").notNullable();
+      table.string("avatar").nullable();
+      table.text("description").nullable();
+      table.dateTime("created_at").notNullable().defaultTo(knex.fn.now());
+      table.dateTime("updated_at").nullable();
+      table.string("created_by").notNullable();
+    }),
+    knex.schema.createTable("giraffeSubspecies", function (table) {
+      table.string("id").notNullable().primary();
+      table.string("species").notNullable();
+      table.string("name").notNullable();
+      table.string("scientific_name").notNullable();
+      table.string("avatar").nullable();
+      table.text("description").nullable();
+      table.dateTime("created_at").notNullable().defaultTo(knex.fn.now());
+      table.dateTime("updated_at").nullable();
+      table.string("created_by").notNullable();
+    }),
+    knex.schema.createTable("giraffe", function (table) {
+      table.string("id").notNullable().primary();
+      table.string("subspecies").notNullable();
+      table.string("name").notNullable();
+      table.string("avatar").nullable();
+      table.text("description").nullable();
+      table.dateTime("created_at").notNullable().defaultTo(knex.fn.now());
+      table.dateTime("updated_at").nullable();
+      table.string("created_by").notNullable();
+    }),
   ]);
 }
 
@@ -44,5 +75,8 @@ export async function down(knex: Knex): Promise<void[]> {
     knex.schema.dropTable("user"),
     knex.schema.dropTable("apiKey"),
     knex.schema.dropTable("file"),
+    knex.schema.dropTable("giraffeSpecies"),
+    knex.schema.dropTable("giraffeSubspecies"),
+    knex.schema.dropTable("giraffe"),
   ]);
 }

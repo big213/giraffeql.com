@@ -60,3 +60,21 @@ export const getUserRoles = memoize(async function (
 
   return data.values
 })
+
+export const getGiraffeSubspecies = <any>(
+  memoize(function (that, _forceReload = false, filterBy = []) {
+    return collectPaginatorData(
+      that,
+      'getGiraffeSubspeciesPaginator',
+      {
+        id: true,
+        name: true,
+        avatar: true,
+      },
+      {
+        filterBy,
+        sortBy: [],
+      }
+    )
+  })
+)

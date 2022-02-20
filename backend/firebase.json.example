@@ -8,9 +8,13 @@
   },
   "hosting": [
     {
-      "target": "giraffeql-com-api",
+      "target": "giraffeql-boilerplate-api",
       "public": "public",
-      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
       "trailingSlash": false,
       "rewrites": [
         {
@@ -20,9 +24,13 @@
       ]
     },
     {
-      "target": "giraffeql-com-cdn",
+      "target": "giraffeql-boilerplate-cdn",
       "public": "public",
-      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
       "trailingSlash": false,
       "rewrites": [
         {
