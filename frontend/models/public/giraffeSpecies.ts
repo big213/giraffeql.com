@@ -1,4 +1,5 @@
 import { GiraffeSpecies } from '../base'
+import { PublicGiraffeSubspecies } from './giraffeSubspecies'
 
 export const PublicGiraffeSpecies = {
   ...GiraffeSpecies,
@@ -20,4 +21,18 @@ export const PublicGiraffeSpecies = {
   editOptions: undefined,
   deleteOptions: undefined,
   importOptions: undefined,
+  expandTypes: [
+    {
+      recordInfo: PublicGiraffeSubspecies,
+      lockedFilters: (_that, item) => {
+        return [
+          {
+            field: 'species',
+            operator: 'eq',
+            value: item.id,
+          },
+        ]
+      },
+    },
+  ],
 }
