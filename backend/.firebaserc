@@ -5,10 +5,10 @@
   "targets": {
     "giraffeql-com": {
       "hosting": {
-        "giraffeql-com-api": [
+        "api": [
           "giraffeql-com-api"
         ],
-        "giraffeql-com-cdn": [
+        "cdn": [
           "giraffeql-com-cdn"
         ]
       }

@@ -8,7 +8,7 @@
   },
   "hosting": [
     {
-      "target": "giraffeql-com-api",
+      "target": "api",
       "public": "public",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "trailingSlash": false,
@@ -20,7 +20,7 @@
       ]
     },
     {
-      "target": "giraffeql-com-cdn",
+      "target": "cdn",
       "public": "public",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "trailingSlash": false,

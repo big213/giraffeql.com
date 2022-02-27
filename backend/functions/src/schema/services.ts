@@ -11,6 +11,8 @@ import { GiraffeSubspeciesService } from "./models/giraffeSubspecies/service";
 import { GiraffeService } from "./models/giraffe/service";
 /** END Service Import */
 
+import { UserUserFollowLinkService } from "./links/userUserFollowLink/service"
+import { UserGiraffeFollowLinkService } from "./links/userGiraffeFollowLink/service"
 /** END LINK Service Import */
 
 export const User = new UserService();
@@ -23,6 +25,8 @@ export const GiraffeSubspecies = new GiraffeSubspeciesService();
 export const Giraffe = new GiraffeService();
 /** END Service Set */
 
+export const UserUserFollowLink = new UserUserFollowLinkService();
+export const UserGiraffeFollowLink = new UserGiraffeFollowLinkService();
 /** END LINK Service Set */
 
 export const UserRole = new KenumService("userRole", userRoleKenum);

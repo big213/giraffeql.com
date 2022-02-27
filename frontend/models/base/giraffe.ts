@@ -2,7 +2,7 @@ import type { RecordInfo } from '~/types'
 import TimeagoColumn from '~/components/table/timeagoColumn.vue'
 import AvatarColumn from '~/components/table/avatarColumn.vue'
 import NameAvatarColumn from '~/components/table/nameAvatarColumn.vue'
-import RecordColumn from '~/components/table/recordColumn.vue'
+import FollowColumn from '~/components/table/followColumn.vue'
 import {
   generateJoinableField,
   generatePreviewableRecordField,
@@ -52,6 +52,18 @@ export const Giraffe = <RecordInfo<'giraffe'>>{
       fieldname: 'subspecies',
       text: 'Subspecies',
     }),
+    record: generatePreviewableRecordField({
+      text: 'Giraffe',
+      followLinkModel: 'userGiraffeFollowLink',
+    }),
+    currentUserFollowing: {
+      text: 'Follow',
+      fields: ['currentUserFollowLink.id'],
+      component: FollowColumn,
+      columnOptions: {
+        linkModel: 'userGiraffeFollowLink',
+      },
+    },
     createdBy: generateJoinableField({
       text: 'Created By',
       fieldname: 'createdBy',
@@ -105,7 +117,13 @@ export const Giraffe = <RecordInfo<'giraffe'>>{
     fields: ['subspecies', 'avatar', 'name', 'description'],
   },
   viewOptions: {
-    fields: ['subspeciesRecord', 'avatar', 'name', 'description'],
+    fields: [
+      'subspeciesRecord',
+      'avatar',
+      'name',
+      'description',
+      'currentUserFollowing',
+    ],
   },
   enterOptions: {},
   deleteOptions: {},

@@ -6,7 +6,7 @@ export const PublicGiraffe = {
     ...(!!Giraffe.paginationOptions && Giraffe.paginationOptions),
     headerOptions: [
       {
-        field: 'nameWithAvatar',
+        field: 'record',
       },
       {
         field: 'subspeciesRecord',

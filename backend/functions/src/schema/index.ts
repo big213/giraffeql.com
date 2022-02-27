@@ -10,6 +10,8 @@ import giraffeSubspecies from "./models/giraffeSubspecies/typeDef";
 import giraffe from "./models/giraffe/typeDef";
 /** END TypeDef Import */
 
+import userUserFollowLink from "./links/userUserFollowLink/typeDef"
+import userGiraffeFollowLink from "./links/userGiraffeFollowLink/typeDef"
 /** END LINK TypeDef Import */
 
 // add the objectTypeDefs for the services with objectTypeDefs
@@ -21,6 +23,8 @@ allServices.GiraffeSubspecies.setTypeDef(giraffeSubspecies);
 allServices.Giraffe.setTypeDef(giraffe);
 /** END TypeDef Set */
 
+allServices.UserUserFollowLink.setTypeDef(userUserFollowLink)
+allServices.UserGiraffeFollowLink.setTypeDef(userGiraffeFollowLink)
 /** END LINK TypeDef Set */
 
 import User from "./models/user/rootResolver";
@@ -33,6 +37,8 @@ import GiraffeSubspecies from "./models/giraffeSubspecies/rootResolver";
 import Giraffe from "./models/giraffe/rootResolver";
 /** END RootResolver Import */
 
+import UserUserFollowLink from "./links/userUserFollowLink/rootResolver"
+import UserGiraffeFollowLink from "./links/userGiraffeFollowLink/rootResolver"
 /** END LINK RootResolver Import */
 
 allServices.User.setRootResolvers(User);
@@ -45,4 +51,6 @@ allServices.GiraffeSubspecies.setRootResolvers(GiraffeSubspecies);
 allServices.Giraffe.setRootResolvers(Giraffe);
 /** END RootResolver Set */
 
+allServices.UserUserFollowLink.setRootResolvers(UserUserFollowLink);
+allServices.UserGiraffeFollowLink.setRootResolvers(UserGiraffeFollowLink);
 /** END LINK RootResolver Set */

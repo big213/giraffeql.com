@@ -1,4 +1,4 @@
-import { AccessControlMap } from "../../../types";
+import { AccessControlMap, ServiceFunctionInputs } from "../../../types";
 import { PaginatedService } from "../../core/services";
 import { isCurrentUser } from "../../helpers/permissions";
 
@@ -31,7 +31,13 @@ export class GiraffeService extends PaginatedService {
     - createdBy.id is currentUser
     */
     update: async ({ req, args, fieldPath }) => {
-      const record = await this.lookupRecord(["createdBy.id"], args, fieldPath);
+      const record = await this.getFirstSqlRecord(
+        {
+          select: ["createdBy.id"],
+          where: args,
+        },
+        fieldPath
+      );
       if (isCurrentUser(req, record["createdBy.id"])) {
         return true;
       }
@@ -44,7 +50,13 @@ export class GiraffeService extends PaginatedService {
     - createdBy.id is currentUser
     */
     delete: async ({ req, args, fieldPath }) => {
-      const record = await this.lookupRecord(["createdBy.id"], args, fieldPath);
+      const record = await this.getFirstSqlRecord(
+        {
+          select: ["createdBy.id"],
+          where: args,
+        },
+        fieldPath
+      );
       if (isCurrentUser(req, record["createdBy.id"])) {
         return true;
       }
@@ -52,4 +64,10 @@ export class GiraffeService extends PaginatedService {
       return false;
     },
   };
+
+  async getSpecialParams({ req }: ServiceFunctionInputs) {
+    return {
+      currentUserId: req.user?.id ?? null,
+    };
+  }
 }
