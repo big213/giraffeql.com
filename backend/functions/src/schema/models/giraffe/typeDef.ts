@@ -14,8 +14,8 @@ import {
   generateTextField,
   generateTypenameField,
   generateJoinableField,
+  generateCurrentUserFollowLinkField,
 } from "../../core/helpers/typeDef";
-import { knex } from "../../../utils/knex";
 
 export default new GiraffeqlObjectType(<ObjectTypeDefinition>{
   name: Giraffe.typename,
@@ -32,41 +32,9 @@ export default new GiraffeqlObjectType(<ObjectTypeDefinition>{
     description: generateTextField({
       allowNull: true,
     }),
-    // foreign sql field
-    currentUserFollowLink: {
-      type: UserGiraffeFollowLink.typeDefLookup,
-      allowNull: true,
-      sqlOptions: {
-        joinType: UserGiraffeFollowLink.typename,
-        specialJoin: {
-          field: "id",
-          foreignTable: UserGiraffeFollowLink.typename,
-          joinFunction: (
-            knexObject,
-            parentTableAlias,
-            joinTableAlias,
-            specialParams
-          ) => {
-            knexObject.leftJoin(
-              {
-                [joinTableAlias]: UserGiraffeFollowLink.typename,
-              },
-              (builder) => {
-                builder
-                  .on(parentTableAlias + ".id", "=", joinTableAlias + ".target")
-                  .andOn(
-                    specialParams.currentUserId
-                      ? knex.raw(`"${joinTableAlias}".user = ?`, [
-                          specialParams.currentUserId,
-                        ])
-                      : knex.raw("false")
-                  );
-              }
-            );
-          },
-        },
-      },
-    },
+    currentUserFollowLink: generateCurrentUserFollowLinkField(
+      UserGiraffeFollowLink
+    ),
     ...generateCreatedAtField(),
     ...generateUpdatedAtField(),
     ...generateCreatedByField(User),
