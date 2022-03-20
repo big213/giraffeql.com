@@ -19,14 +19,14 @@ export const routesMap = {
   a: [
     'apiKey',
     'file',
+    'user',
+    'userUserFollowLink',
     'giraffe',
     'giraffeSpecies',
     'giraffeSubspecies',
-    'user',
     'userGiraffeFollowLink',
-    'userUserFollowLink',
   ],
-  i: ['giraffe', 'giraffeSpecies', 'giraffeSubspecies', 'user'],
+  i: ['user', 'giraffe', 'giraffeSpecies', 'giraffeSubspecies'],
   my: ['apiKey', 'file', 'giraffe'],
   s: [],
 }

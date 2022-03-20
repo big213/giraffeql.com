@@ -15,7 +15,7 @@
           </v-list-item-content>
         </template>
         <template v-for="child in item.items">
-          <v-list-item :key="child.title" :to="child.to">
+          <v-list-item :key="child.title" :to="child.to" nuxt exact-path>
             <v-list-item-content>
               <v-list-item-title v-text="child.title"></v-list-item-title>
             </v-list-item-content>
@@ -33,7 +33,7 @@ import * as baseModels from '~/models/base'
 function generateAdminRouteObject(that, recordInfo) {
   return {
     icon: recordInfo.icon,
-    title: recordInfo.title ?? recordInfo.pluralTypename,
+    title: recordInfo.title ?? recordInfo.typename,
     to: generateCrudRecordRoute(that, {
       typename: recordInfo.typename,
       routeType: 'a',

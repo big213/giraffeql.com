@@ -5,7 +5,14 @@
     </nuxt-link>
     <v-divider></v-divider>
     <v-list dense>
-      <v-list-item v-for="(item, i) in mainItems" :key="i" :to="item.to" router>
+      <v-list-item
+        v-for="(item, i) in mainItems"
+        :key="i"
+        :to="item.to"
+        nuxt
+        router
+        exact-path
+      >
         <v-list-item-action>
           <v-icon>{{ item.icon }}</v-icon>
         </v-list-item-action>
@@ -17,7 +24,14 @@
     <v-divider></v-divider>
     <v-list dense>
       <v-subheader>Explore</v-subheader>
-      <v-list-item v-for="(item, i) in navItems" :key="i" :to="item.to" router>
+      <v-list-item
+        v-for="(item, i) in navItems"
+        :key="i"
+        :to="item.to"
+        nuxt
+        router
+        exact-path
+      >
         <v-list-item-action>
           <v-icon>{{ item.icon }}</v-icon>
         </v-list-item-action>
@@ -29,7 +43,14 @@
     <v-divider></v-divider>
     <v-list v-if="user" dense>
       <v-subheader>My Account</v-subheader>
-      <v-list-item v-for="(item, i) in userItems" :key="i" :to="item.to" router>
+      <v-list-item
+        v-for="(item, i) in userItems"
+        :key="i"
+        :to="item.to"
+        nuxt
+        router
+        exact-path
+      >
         <v-list-item-action>
           <v-icon>{{ item.icon }}</v-icon>
         </v-list-item-action>
