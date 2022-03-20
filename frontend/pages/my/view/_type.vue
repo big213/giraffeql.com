@@ -23,6 +23,8 @@ export default {
     return { type }
   },
 
+  middleware: ['router-auth'],
+
   components: {
     ViewRecordPage,
   },

@@ -22,6 +22,7 @@ export default {
     const type = kebabToCamelCase(params.type)
     return { type }
   },
+
   middleware: ['router-auth'],
 
   components: {

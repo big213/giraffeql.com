@@ -24,6 +24,7 @@ export default {
   },
 
   middleware: ['router-auth'],
+
   components: {
     ViewRecordPage,
   },
