@@ -1,5 +1,4 @@
 import { GiraffeSubspecies } from '../base'
-import { MyGiraffes } from '../special'
 import { PublicGiraffe } from './giraffe'
 
 export const PublicGiraffeSubspecies = {
@@ -22,11 +21,13 @@ export const PublicGiraffeSubspecies = {
     ],
     downloadOptions: undefined,
   },
-  routeName: 'i-view',
   addOptions: undefined,
   editOptions: undefined,
   deleteOptions: undefined,
   importOptions: undefined,
+  enterOptions: {
+    routeType: 'i',
+  },
   expandTypes: [
     {
       recordInfo: PublicGiraffe,

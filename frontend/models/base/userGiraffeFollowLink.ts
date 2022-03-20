@@ -11,7 +11,6 @@ export const UserGiraffeFollowLink = <RecordInfo<'userGiraffeFollowLink'>>{
   name: 'UserGiraffeFollowLink',
   pluralName: 'UserGiraffeFollowLinks',
   icon: 'mdi-link',
-  routeName: 'a-view',
   renderItem: (item) => item.name,
   fields: {
     id: {
@@ -87,7 +86,9 @@ export const UserGiraffeFollowLink = <RecordInfo<'userGiraffeFollowLink'>>{
   viewOptions: {
     fields: ['userRecord', 'targetRecord'],
   },
-  enterOptions: {},
+  enterOptions: {
+    routeType: 'a',
+  },
   deleteOptions: {},
   shareOptions: {},
   expandTypes: [],

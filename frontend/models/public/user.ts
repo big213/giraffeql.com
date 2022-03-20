@@ -3,6 +3,7 @@ import { PublicGiraffe } from './giraffe'
 
 export const PublicUser = {
   ...User,
+  title: 'Public Users',
   paginationOptions: {
     ...(!!User.paginationOptions && User.paginationOptions),
     filterOptions: [],
@@ -17,7 +18,6 @@ export const PublicUser = {
     ],
     downloadOptions: undefined,
   },
-  routeName: 'i-view',
   viewOptions: {
     fields: ['avatar', 'name', 'isPublic', 'currentUserFollowing'],
   },
@@ -25,6 +25,9 @@ export const PublicUser = {
   editOptions: undefined,
   deleteOptions: undefined,
   importOptions: undefined,
+  enterOptions: {
+    routeType: 'i',
+  },
   expandTypes: [
     {
       recordInfo: PublicGiraffe,

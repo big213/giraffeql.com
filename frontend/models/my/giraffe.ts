@@ -1,10 +1,13 @@
 import { Giraffe } from '../base'
 
-export const MyGiraffes = {
+export const MyGiraffe = {
   ...Giraffe,
-  routeName: 'i-view',
+  title: `My ${Giraffe.pluralName}`,
   paginationOptions: {
     ...Giraffe.paginationOptions,
     downloadOptions: undefined,
+  },
+  enterOptions: {
+    routeType: 'my',
   },
 }

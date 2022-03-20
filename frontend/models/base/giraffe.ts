@@ -15,7 +15,6 @@ export const Giraffe = <RecordInfo<'giraffe'>>{
   name: 'Giraffe',
   pluralName: 'Giraffes',
   icon: 'mdi-pig-variant',
-  routeName: 'a-view',
   renderItem: (item) => item.name,
   fields: {
     id: {
@@ -125,7 +124,9 @@ export const Giraffe = <RecordInfo<'giraffe'>>{
       'currentUserFollowing',
     ],
   },
-  enterOptions: {},
+  enterOptions: {
+    routeType: 'a',
+  },
   deleteOptions: {},
   shareOptions: {},
   expandTypes: [],

@@ -19,9 +19,11 @@ export const PublicGiraffe = {
     ],
     downloadOptions: undefined,
   },
-  routeName: 'i-view',
   addOptions: undefined,
   editOptions: undefined,
   deleteOptions: undefined,
   importOptions: undefined,
+  enterOptions: {
+    routeType: 'i',
+  },
 }

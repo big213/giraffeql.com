@@ -14,7 +14,6 @@ export const GiraffeSubspecies = <RecordInfo<'giraffeSubspecies'>>{
   name: 'Giraffe Subspecies',
   pluralName: 'Giraffe Subspecies',
   icon: 'mdi-folder-information',
-  routeName: 'a-view',
   renderItem: (item) => item.name,
   fields: {
     id: {
@@ -105,7 +104,9 @@ export const GiraffeSubspecies = <RecordInfo<'giraffeSubspecies'>>{
       'description',
     ],
   },
-  enterOptions: {},
+  enterOptions: {
+    routeType: 'a',
+  },
   deleteOptions: {},
   shareOptions: {},
   expandTypes: [

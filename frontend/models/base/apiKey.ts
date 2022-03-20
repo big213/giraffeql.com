@@ -9,7 +9,6 @@ export const ApiKey = <RecordInfo<'apiKey'>>{
   name: 'API Key',
   pluralName: 'API Keys',
   icon: 'mdi-view-grid-plus',
-  routeName: 'a-view',
   renderItem: (item) => item.name,
   fields: {
     id: {
@@ -53,10 +52,6 @@ export const ApiKey = <RecordInfo<'apiKey'>>{
         field: 'createdAt',
         desc: true,
       },
-      {
-        field: 'updatedAt',
-        desc: true,
-      },
     ],
     headerOptions: [
       {
@@ -85,6 +80,9 @@ export const ApiKey = <RecordInfo<'apiKey'>>{
   },
   viewOptions: {
     fields: ['name', 'permissions', 'code', 'user'],
+  },
+  enterOptions: {
+    routeType: 'a',
   },
   deleteOptions: {},
   shareOptions: undefined,
