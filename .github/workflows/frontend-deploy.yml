@@ -28,7 +28,7 @@ jobs:
           IMAGE_SERVING_URL: https://cdn.giraffeql.com
           VER: ${{ github.ref }}
           SITE_NAME: "Giraffeql"
-          SITE_DESCRIPTION: "Giraffeql.com showcases the capabilities of the open source Giraffeql querying language by allowing the user to document giraffes of various species."
+          SITE_DESCRIPTION: "Giraffeql.com showcases the capabilities of the open source Giraffeql querying language by allowing the user to document giraffes of various species"
           SITE_IMAGE_URL: https://cdn.giraffeql.com/permanent/android-chrome-512x512.png
           SITE_CONTACT_EMAIL: hello@giraffeql.com
           SITE_DISCORD_LINK: https://discord.gg/CpSWfub9y6
