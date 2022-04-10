@@ -9,6 +9,7 @@ export const PublicGiraffeSubspecies = {
     headerOptions: [
       {
         field: 'nameWithAvatar',
+        hideIfGrid: true,
       },
       {
         field: 'speciesRecord',

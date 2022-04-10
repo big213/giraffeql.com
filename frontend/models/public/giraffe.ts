@@ -7,6 +7,7 @@ export const PublicGiraffe = {
     headerOptions: [
       {
         field: 'record',
+        hideIfGrid: true,
       },
       {
         field: 'subspeciesRecord',

@@ -70,6 +70,7 @@ export const GiraffeSubspecies = <RecordInfo<'giraffeSubspecies'>>{
     headerOptions: [
       {
         field: 'nameWithAvatar',
+        hideIfGrid: true,
       },
       {
         field: 'speciesRecord',

@@ -90,6 +90,7 @@ export const Giraffe = <RecordInfo<'giraffe'>>{
     headerOptions: [
       {
         field: 'nameWithAvatar',
+        hideIfGrid: true,
       },
       {
         field: 'subspeciesRecord',

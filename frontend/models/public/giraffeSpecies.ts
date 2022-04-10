@@ -8,6 +8,7 @@ export const PublicGiraffeSpecies = {
     headerOptions: [
       {
         field: 'nameWithAvatar',
+        hideIfGrid: true,
       },
       {
         field: 'createdAt',
