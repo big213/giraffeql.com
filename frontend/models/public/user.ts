@@ -10,6 +10,7 @@ export const PublicUser = {
     headerOptions: [
       {
         field: 'record',
+        hideIfGrid: true,
       },
       {
         field: 'createdAt',

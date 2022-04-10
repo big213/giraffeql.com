@@ -69,6 +69,7 @@ export type SqlWhereFieldOperator =
   | "regex"
   | "like"
   | "gt"
+  | "gtornull"
   | "gte"
   | "lt"
   | "lte"
@@ -429,7 +430,7 @@ function applyWhere(
           if (whereSubObject.value === null) {
             whereSubstatement += " IS NOT NULL";
           } else {
-            whereSubstatement += " != ?";
+            whereSubstatement += " IS DISTINCT FROM ?";
             bindings.push(whereSubObject.value);
           }
           break;
@@ -441,6 +442,15 @@ function applyWhere(
             // being gt a non-null value is generally understood to not include nulls. however, since > does not include nulls in pg anyway, we don't need to include it
             // whereSubstatement = `(${whereSubstatement} > ? AND ${whereSubstatement} IS NOT NULL)`;
             whereSubstatement += " > ?";
+            bindings.push(whereSubObject.value);
+          }
+          break;
+        case "gtornull":
+          if (whereSubObject.value === null) {
+            // gt or null of null is generally understood to always be true
+            whereSubstatement = "TRUE";
+          } else {
+            whereSubstatement = `(${whereSubstatement} > ? OR ${whereSubstatement} IS NULL)`;
             bindings.push(whereSubObject.value);
           }
           break;
@@ -473,6 +483,7 @@ function applyWhere(
           }
           break;
         case "in":
+        case "nin":
           if (Array.isArray(whereSubObject.value)) {
             // if array is empty, is equivalent of FALSE
             if (whereSubObject.value.length < 1) {
@@ -481,43 +492,20 @@ function applyWhere(
                 "Must provide non-empty array for (n)in operators"
               );
             } else {
-              // if trying to do IN (null), adjust accordingly
-              if (whereSubObject.value.some((ele) => ele === null)) {
-                whereSubstatement = `(${whereSubstatement} IN (${whereSubObject.value
-                  .filter((ele) => ele !== null)
-                  .map(() => "?")}) OR ${whereSubstatement} IS NULL)`;
-              } else {
-                whereSubstatement += ` IN (${whereSubObject.value.map(
-                  () => "?"
-                )})`;
-              }
+              const operatorPrefix = operator === "nin" ? "NOT " : "";
 
-              whereSubObject.value
-                .filter((ele) => ele !== null)
-                .forEach((ele) => {
-                  bindings.push(ele);
-                });
-            }
-          } else {
-            throw new Error("Must provide array for in/nin operators");
-          }
-          break;
-        case "nin":
-          if (Array.isArray(whereSubObject.value)) {
-            // if array is empty, is equivalent of TRUE
-            if (whereSubObject.value.length < 1) {
-              // whereSubstatement = " TRUE";
-              throw new Error(
-                "Must provide non-empty array for (n)in operators"
-              );
-            } else {
-              // if trying to do IN (null), adjust accordingly
-              if (whereSubObject.value.some((ele) => ele === null)) {
-                whereSubstatement = `(${whereSubstatement} NOT IN (${whereSubObject.value
+              if (whereSubObject.value.every((ele) => ele === null)) {
+                // if every element is null, handle specially
+                whereSubstatement += ` IS ${operatorPrefix}NULL`;
+              } else if (whereSubObject.value.some((ele) => ele === null)) {
+                // if trying to do IN (null, otherValue), adjust accordingly
+                whereSubstatement = `(${whereSubstatement} ${operatorPrefix}IN (${whereSubObject.value
                   .filter((ele) => ele !== null)
-                  .map(() => "?")}) OR ${whereSubstatement} IS NULL)`;
+                  .map(() => "?")}) ${
+                  operator === "nin" ? "AND" : "OR"
+                } ${whereSubstatement} IS ${operatorPrefix}NULL)`;
               } else {
-                whereSubstatement += ` NOT IN (${whereSubObject.value.map(
+                whereSubstatement += ` ${operatorPrefix}IN (${whereSubObject.value.map(
                   () => "?"
                 )})`;
               }
@@ -812,6 +800,9 @@ export async function sumTableRows(
       relevantFields.add(field)
     );
 
+    // add the field to be summed
+    relevantFields.add(sqlQuery.field);
+
     const { fieldInfoMap, requiredJoins, tableIndexMap } = processFields(
       relevantFields,
       sqlQuery.table
@@ -832,8 +823,13 @@ export async function sumTableRows(
       knexObject.limit(sqlQuery.limit);
     }
 
+    // this shoud always exist
+    const sumFieldInfo = fieldInfoMap.get(sqlQuery.field)!;
+
     // apply distinct
-    knexObject[sqlQuery.distinct ? "sumDistinct" : "sum"](sqlQuery.field);
+    knexObject[sqlQuery.distinct ? "sumDistinct" : "sum"](
+      knex.raw(`"${sumFieldInfo.tableAlias}"."${sumFieldInfo.finalField}"`)
+    );
 
     const results = await knexObject;
     return Number(results[0].sum);

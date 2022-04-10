@@ -15,11 +15,12 @@ import {
   collectPaginatorData,
   getIcon,
   viewportToPixelsMap,
-  generateDateLocaleString,
   lookupFieldInfo,
   populateInputObject,
   processQuery,
+  parseTimeLanguage,
 } from '~/services/base'
+import { defaultGridView } from '~/services/config'
 
 export default {
   name: 'CrudRecordInterface',
@@ -87,6 +88,11 @@ export default {
       type: Boolean,
       default: false,
     },
+    // was reset called on parent on this
+    parentResetCalledOnTick: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   data() {
@@ -123,6 +129,9 @@ export default {
 
       // has the recordInfo been changed?
       cancelPageOptionsReset: false,
+
+      // has reset been called on this tick already?
+      resetCalledOnTick: false,
 
       records: [],
       totalRecords: 0,
@@ -175,6 +184,11 @@ export default {
           // if there is a hideIf function, check it
           if (headerInfo.hideIf && headerInfo.hideIf(this)) return false
 
+          // if hideIfGrid/hideIfList, check it
+          if (headerInfo.hideIfGrid && this.isGrid) return false
+
+          if (headerInfo.hideIfList && !this.isGrid) return false
+
           // if isDialog, hide column if isDialog === true
           if (this.isDialog && headerInfo.hideIfDialog) return false
 
@@ -187,7 +201,7 @@ export default {
             viewportToPixelsMap[headerInfo.hideUnder]
           )
         })
-        .map((headerInfo) => {
+        .map((headerInfo, index) => {
           const fieldInfo = lookupFieldInfo(this.recordInfo, headerInfo.field)
 
           const primaryField = fieldInfo.fields
@@ -199,7 +213,8 @@ export default {
             align: headerInfo.align ?? 'left',
             value: primaryField,
             sortable: false,
-            width: headerInfo.width ?? null,
+            // first header should never be restricted in width
+            width: index === 0 ? null : headerInfo.width ?? null,
             fieldInfo,
             // equal to pathPrefix if provided
             // else equal to the field if single-field
@@ -378,8 +393,12 @@ export default {
       this.isPolling = true
     }
 
-    if (localStorage.getItem('viewMode') && !this.isChildComponent) {
-      this.isGrid = localStorage.getItem('viewMode') === 'grid'
+    if (!this.isChildComponent) {
+      if (localStorage.getItem('viewMode')) {
+        this.isGrid = localStorage.getItem('viewMode') === 'grid'
+      } else {
+        this.isGrid = !!defaultGridView
+      }
     }
 
     this.reset({
@@ -391,6 +410,9 @@ export default {
       this.handleVisibilityChange,
       false
     )
+
+    // listen for root refresh events
+    this.$root.$on('refresh-interface', this.refreshCb)
   },
 
   destroyed() {
@@ -399,11 +421,22 @@ export default {
       'visibilitychange',
       this.handleVisibilityChange
     )
+
+    this.$root.$off('refresh-interface', this.refreshCb)
   },
 
   methods: {
     generateTimeAgoString,
     getIcon,
+    getNestedProperty,
+
+    refreshCb(typename) {
+      if (this.recordInfo.typename === typename) {
+        this.reset({
+          resetExpanded: false,
+        })
+      }
+    },
 
     toggleGridMode() {
       this.isGrid = !this.isGrid
@@ -433,7 +466,6 @@ export default {
     },
 
     handleInactiveState() {
-      console.log('you are now inactive')
       // when inactive for more than 30 mins, pause polling.
       this.isPolling = false
     },
@@ -490,8 +522,16 @@ export default {
       this.subPageOptions = pageOptions
     },
 
-    // expanded
+    // toggle the expand state. if it is mobile view, use dialog
     toggleItemExpanded(props, expandTypeObject) {
+      if (props.isMobile) {
+        this.openExpandDialog(props.item, expandTypeObject)
+      } else {
+        this.openExpandContainer(props, expandTypeObject)
+      }
+    },
+
+    openExpandContainer(props, expandTypeObject) {
       this.expandTypeObject = expandTypeObject
 
       this.expandedItem = props.item
@@ -510,7 +550,7 @@ export default {
       }
     },
 
-    // same as toggleItemExpanded, but for mobile views
+    // same as openExpandContainer, but for mobile views
     openExpandDialog(item, expandTypeObject) {
       this.expandTypeObject = expandTypeObject
       this.expandedItem = item
@@ -530,9 +570,14 @@ export default {
       this.expandedItems.pop()
     },
 
-    handleRowClick(item) {
+    handleRowClick(props) {
       if (this.recordInfo.paginationOptions.handleRowClick)
-        this.recordInfo.paginationOptions.handleRowClick(this, item)
+        this.recordInfo.paginationOptions.handleRowClick(this, props)
+    },
+
+    handleGridElementClick(item) {
+      if (this.recordInfo.paginationOptions.handleGridElementClick)
+        this.recordInfo.paginationOptions.handleGridElementClick(this, item)
     },
 
     getTableRowData(headerItem, item) {
@@ -572,14 +617,23 @@ export default {
         // if value is '__undefined', exclude it entirely
         if (rawFilterObject.value === '__undefined') return total
 
-        // parse '__null' to null first
-        // also parse '__now()' to current date string
-        const value =
-          rawFilterObject.value === '__null'
-            ? null
-            : rawFilterObject.value === '__now()'
-            ? generateDateLocaleString(new Date().getTime() / 1000)
-            : rawFilterObject.value
+        let value
+
+        const timeLanguageMatch =
+          typeof rawFilterObject.value === 'string' &&
+          rawFilterObject.value.match(/^__t:(.*)/)
+
+        // if value matches __t:now(), parse the time language
+        if (timeLanguageMatch) {
+          if (timeLanguageMatch) {
+            value = parseTimeLanguage(timeLanguageMatch[1])
+          }
+        } else if (rawFilterObject.value === '__null') {
+          // parse '__null' to null
+          value = null
+        } else {
+          value = rawFilterObject.value
+        }
 
         // apply parseValue function, if any
         total[primaryField][rawFilterObject.operator] = fieldInfo.parseValue
@@ -604,8 +658,8 @@ export default {
       this.loading.exportData = true
       try {
         // use custom download fields if provided
-        const customFields = this.recordInfo.paginationOptions.downloadOptions
-          .fields
+        const customFields =
+          this.recordInfo.paginationOptions.downloadOptions.fields
         const fields =
           customFields ??
           this.recordInfo.paginationOptions.headerOptions
@@ -876,7 +930,6 @@ export default {
     handleListChange() {
       // also need to emit to parent (if any)
       this.$emit('record-changed')
-
       this.reset()
     },
 
@@ -891,6 +944,17 @@ export default {
       showLoader = true,
       clearRecords = true,
     } = {}) {
+      // if reset was already called on this tick, stop execution
+      if (this.resetCalledOnTick) return
+
+      // indicate that reset was called on this tick
+      this.resetCalledOnTick = true
+
+      // reset the indicator next tick
+      this.$nextTick(() => {
+        this.resetCalledOnTick = false
+      })
+
       if (clearRecords) {
         this.records = []
         this.totalRecords = null

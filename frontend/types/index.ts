@@ -89,7 +89,12 @@ export type RecordInfo<T extends keyof MainTypes> = {
 
     sortOptions: SortObject[]
 
+    // what is the path to the preview image, relative to the record? defaults to 'avatar'
+    previewImagePath?: string
+    // what is the path to the preview name, relative to the record? defaults to 'name'
+    previewNamePath?: string
     // extra sort params that are to be appended to the user-selected sort params
+
     additionalSortParams?: CrudRawSortObject[]
 
     // the headers of the table
@@ -99,7 +104,9 @@ export type RecordInfo<T extends keyof MainTypes> = {
       text?: string
       width?: string
     }
-    handleRowClick?: (that, item) => void
+    handleRowClick?: (that, props) => void
+    handleGridElementClick?: (that, item) => void
+
     // custom component
     interfaceComponent?: any
     // can the results be downloaded?
@@ -116,6 +123,8 @@ export type RecordInfo<T extends keyof MainTypes> = {
     component?: any
     // if not createX, the custom create operation name
     operationName?: string
+    // function that runs when recorded is successfully added
+    onSuccess?: (that) => void
   }
 
   importOptions?: {
@@ -138,6 +147,8 @@ export type RecordInfo<T extends keyof MainTypes> = {
     icon?: string
     // replacement text
     text?: string
+    // function that runs when recorded is successfully edited
+    onSuccess?: (that) => void
   }
 
   deleteOptions?: {
@@ -146,6 +157,8 @@ export type RecordInfo<T extends keyof MainTypes> = {
     component?: any
     // if not createX, the custom create operation name
     operationName?: string
+    // function that runs when recorded is successfully deleted
+    onSuccess?: (that) => void
   }
 
   viewOptions?: {
@@ -258,6 +271,8 @@ type HeaderObject = {
   align?: string
   hideUnder?: 'sm' | 'md' | 'lg' | 'xl' // hide this column if viewport is smaller than this
   hideIfDialog?: boolean // hide this column if shown in a dialog element
+  hideIfGrid?: boolean // hide this column if in grid mode
+  hideIfList?: boolean // hide this column if in list mode
   hideIf?: (that) => boolean
 }
 
@@ -270,6 +285,7 @@ export type InputType =
   | 'value-array'
   | 'avatar'
   | 'datepicker'
+  | 'datetimepicker'
   | 'switch'
   | 'textarea'
   | 'combobox' // combobox allows the user to add new inputs on the fly (will change to autocomplete in filter interfaces)

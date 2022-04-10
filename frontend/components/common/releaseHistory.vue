@@ -7,8 +7,8 @@
         indeterminate
       ></v-progress-linear>
       <div v-for="(item, i) in releases" v-else :key="i" class="mb-4">
-        <span class="headline" :title="item.createdAt"
-          >{{ item.name }} ({{ generateTimeAgoString(item.createdAt) }})</span
+        <span class="headline" :title="item.publishedAt"
+          >{{ item.name }} ({{ generateTimeAgoString(item.publishedAt) }})</span
         >
         <div v-html="item.descriptionHTML"></div>
       </div>
@@ -47,13 +47,17 @@ export default {
     async loadData() {
       this.loading.loadData = true
       try {
-        this.releases = await executeGiraffeql(this, {
-          getRepositoryReleases: {
-            __args: {
-              first: 5,
+        this.releases = await executeGiraffeql(
+          this,
+          {
+            getRepositoryReleases: {
+              __args: {
+                first: 5,
+              },
             },
           },
-        })
+          true
+        )
       } catch (err) {
         // do nothing
       }
